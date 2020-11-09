@@ -1,5 +1,4 @@
 import com.sun.jdi.Value;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,6 +29,7 @@ public class MainFrame extends JFrame {
     private JMenuItem searchValueMenuItem;
     private JMenuItem aboutProgramItem;
     private JMenuItem easyNumbersItem;
+    private JMenuItem saveToCSVItem;
     // Поля ввода для считывания значений переменных
     private JTextField textFieldFrom;
     private JTextField textFieldTo;
@@ -64,6 +64,23 @@ public class MainFrame extends JFrame {
         menuBar.add(tableMenu);
         JMenu aboutProgram = new JMenu("Справка");
         menuBar.add(aboutProgram);
+        //Create ability to save table to the .csv file
+        Action saveToCSVAction = new AbstractAction("Сохранить в CSV") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(fileChooser == null)
+                {
+                    fileChooser = new JFileChooser();
+                    fileChooser.setCurrentDirectory(new File("."));
+                    if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
+// Если результат его показа успешный,
+// сохранить данные в текстовый файл
+                    saveToCSV(fileChooser.getSelectedFile());
+                }
+
+            }
+        };
+        saveToCSVItem = fileMenu.add(saveToCSVAction);
         //Create adv. functional
         Action easyNumbersAction = new AbstractAction("Найти близкие к простым") {
             @Override
@@ -292,6 +309,23 @@ public void actionPerformed(ActionEvent event) {
         hBoxResult.add(new JPanel());
 // Установить контейнер hBoxResult в главной (центральной) области граничной компоновки
         getContentPane().add(hBoxResult, BorderLayout.CENTER);
+    }
+    protected void saveToCSV(File selectedFile)
+    {
+        try {
+            DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
+            for (int i = 0; i < data.getRowCount(); i++) {
+                for (int j = 0; j < data.getColumnCount(); j++) {
+                    out.writeUTF(data.getValueAt(i, j) + ",");
+                }
+               out.writeUTF("\n");
+            }
+            out.close();
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
     protected void saveToGraphicsFile(File selectedFile) {
         try {
