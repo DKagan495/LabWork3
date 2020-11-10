@@ -81,6 +81,7 @@ public class MainFrame extends JFrame {
             }
         };
         saveToCSVItem = fileMenu.add(saveToCSVAction);
+        saveToCSVItem.setEnabled(false);
         //Create adv. functional
         Action easyNumbersAction = new AbstractAction("Найти близкие к простым") {
             @Override
@@ -91,6 +92,7 @@ public class MainFrame extends JFrame {
             }
         };
         easyNumbersItem = tableMenu.add(easyNumbersAction);
+        easyNumbersItem.setEnabled(false);
         //Create programInfoAction
         Action programInfoAction = new AbstractAction("О программе") {
             @Override
@@ -257,9 +259,11 @@ public void actionPerformed(ActionEvent event) {
 // Обновить область содержания главного окна
                     getContentPane().validate();
 // Пометить ряд элементов меню как доступных
+                    saveToCSVItem.setEnabled(true);
                     saveToTextMenuItem.setEnabled(true);
                     saveToGraphicsMenuItem.setEnabled(true);
                     searchValueMenuItem.setEnabled(true);
+                    easyNumbersItem.setEnabled(true);
                 } catch (NumberFormatException ex) {
 // В случае ошибки преобразования чисел показать сообщение об ошибке
                     JOptionPane.showMessageDialog(MainFrame.this,
@@ -282,9 +286,11 @@ public void actionPerformed(ActionEvent event) {
 // Добавить в контейнер пустую панель
                 hBoxResult.add(new JPanel());
 // Пометить элементы меню как недоступные
+                saveToCSVItem.setEnabled(false);
                 saveToTextMenuItem.setEnabled(false);
                 saveToGraphicsMenuItem.setEnabled(false);
                 searchValueMenuItem.setEnabled(false);
+                easyNumbersItem.setEnabled(false);
 // Обновить область содержания главного окна
                 getContentPane().validate();
             }
@@ -313,12 +319,16 @@ public void actionPerformed(ActionEvent event) {
     protected void saveToCSV(File selectedFile)
     {
         try {
-            DataOutputStream out = new DataOutputStream(new FileOutputStream(selectedFile));
-            for (int i = 0; i < data.getRowCount(); i++) {
+            PrintStream out = new PrintStream(selectedFile);
+            for (int j = 0; j < data.getColumnCount(); j++) {
+                out.print(data.getColumnName(j) + ",");
+            }
+            out.println();
+                       for (int i = 0; i < data.getRowCount(); i++) {
                 for (int j = 0; j < data.getColumnCount(); j++) {
-                    out.writeUTF(data.getValueAt(i, j) + ",");
+                    out.print(data.getValueAt(i, j) + ",");
                 }
-               out.writeUTF("\n");
+               out.println();
             }
             out.close();
         }
