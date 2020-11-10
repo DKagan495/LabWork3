@@ -87,9 +87,8 @@ public class GornerTableCellRenderer implements TableCellRenderer {
         {
             panel.setLayout(new FlowLayout(FlowLayout.CENTER));
         }
-        int counter = 0;
         if(easyNeedle != null) {
-            if((isItEasy((int)Double.parseDouble(label.getText())) && (int)Double.parseDouble(label.getText())-Double.parseDouble(label.getText())>(-0.1))|| (isItEasy((int)Double.parseDouble(label.getText())+1) && (((int)Double.parseDouble(label.getText())+1)-Double.parseDouble(label.getText())<(0.1))))
+            if((isItEasy((int)Double.parseDouble(label.getText())) && (int)Double.parseDouble(label.getText())-Double.parseDouble(label.getText())>=(-0.1))|| (isItEasy((int)Double.parseDouble(label.getText())+1) && (((int)Double.parseDouble(label.getText())+1)-Double.parseDouble(label.getText())<=(0.1))))
             {
                 panel.setBackground(Color.ORANGE);
             }

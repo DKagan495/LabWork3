@@ -72,11 +72,11 @@ public class MainFrame extends JFrame {
                 {
                     fileChooser = new JFileChooser();
                     fileChooser.setCurrentDirectory(new File("."));
-                    if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
+                }
+                if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION)
 // Если результат его показа успешный,
 // сохранить данные в текстовый файл
                     saveToCSV(fileChooser.getSelectedFile());
-                }
 
             }
         };
@@ -235,6 +235,7 @@ public void actionPerformed(ActionEvent event) {
         buttonCalc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 try {
+                    renderer.setEasyNeedle(null);
 // Считать значения начала и конца отрезка, шага
                     Double from =
                             Double.parseDouble(textFieldFrom.getText());
