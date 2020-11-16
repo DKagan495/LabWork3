@@ -18,6 +18,7 @@ public class MainFrame extends JFrame {
     private static final int HEIGHT = 500;
     // Массив коэффициентов многочлена
     private Double[] coefficients;
+    private JTable table;
     // Объект диалогового окна для выбора файлов
 // Компонент не создаѐтся изначально, т.к. может и не понадобиться
 // пользователю если тот не собирается сохранять данные в файл
@@ -247,7 +248,7 @@ public void actionPerformed(ActionEvent event) {
                             data = new GornerTableModel(from, to, step,
                             MainFrame.this.coefficients);
 // Создать новый экземпляр таблицы
-                    JTable table = new JTable(data);
+                    table = new JTable(data);
 // Установить в качестве визуализатора ячеек для класса Double разработанный визуализатор
                     table.setDefaultRenderer(Double.class,
                             renderer);
@@ -320,18 +321,20 @@ public void actionPerformed(ActionEvent event) {
     protected void saveToCSV(File selectedFile)
     {
         try {
-            PrintStream out = new PrintStream(selectedFile);
-            for (int j = 0; j < data.getColumnCount(); j++) {
-                out.print(data.getColumnName(j) + ",");
-            }
-            out.println();
-                       for (int i = 0; i < data.getRowCount(); i++) {
-                for (int j = 0; j < data.getColumnCount(); j++) {
-                    out.print(data.getValueAt(i, j) + ",");
+            FileWriter out  = new FileWriter(selectedFile);
+            BufferedWriter output = new BufferedWriter(out);
+            /*for (int j = 0; j < data.getColumnCount(); j++) {
+                output.write(data.getColumnName(j).toString()+",");
+            }*/
+            //output.newLine();
+                       for (int i = 0; i < table.getRowCount(); i++) {
+                for (int j = 0; j < table.getColumnCount(); j++) {
+                    output.write(table.getValueAt(i, j).toString()+",");
                 }
-               out.println();
+               output.newLine();
             }
-            out.close();
+            output.close();
+                       out.close();
         }
         catch (Exception ex)
         {
